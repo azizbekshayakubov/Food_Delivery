@@ -1,71 +1,68 @@
-import { PRODUCTS, PRODUCTS1 } from "../components/products";
-import Cartitems from "../components/cartitems";
-import { useContext } from "react";
-import { ShopContext } from "../components/shopcontext";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { useCart } from 'react-use-cart';
+import axios from 'axios';
+import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 
 const Cart = () => {
-  const { getTotalCartAmount, ClearCart, getTotalCartProducts, cartItems } =
-    useContext(ShopContext);
-  const TotalAmount = getTotalCartAmount();
-  const totalProducts = getTotalCartProducts();
+  const { items, isEmpty, emptyCart, updateItemQuantity, removeItem } =
+    useCart();
+
+
+  let umumiySumma = 0;
+
   return (
     <>
-      {TotalAmount > 0 ? (
-        <section className="cart-item p-5">
-          <div className="container-xxl">
-            <div className="row">
-              <table>
-                <thead className="my-2">
-                  <th className="col-3">Product Image</th>
-                  <th className="col-3">Product Details</th>
-                  <th className="col-3">Edit</th>
-                  <th className="col-3">Coupons</th>
-                </thead>
+      <Header />
+      <div className='container'>
+        {isEmpty ? (
+          <img
+            className='gif'
+            src='https://schoolville.com/assets/img/empty-cart-illustration.gif'
+            alt=''
+          />
+        ) : (
+          <>
+            <button onClick={() => emptyCart()}>emptyCart</button>
+            <div className='parent'>
+              {items?.map((el) => {
+                const narxSoni = el?.quantity * el?.price;
+                umumiySumma += narxSoni;
+                return (
+                  <div key={el?.id} className='cart'>
+                    <img width={'200px'} src={el?.img} alt='' />
+                    <h3>{el?.name}</h3>
+                    <b>{narxSoni} сум</b>
+                    <br />
+                    <button
+                      onClick={() =>
+                        updateItemQuantity(el?.id, el?.quantity - 1)
+                      }
+                    >
+                      -
+                    </button>
+                    <h4>{el?.quantity}</h4>
+                    <button
+                      onClick={() =>
+                        updateItemQuantity(el?.id, el?.quantity + 1)
+                      }
+                    >
+                      +
+                    </button>
+                    <h2 onClick={() => removeItem(el?.id)}>🧹🧺</h2>
+                  </div>
+                );
+              })}
+            </div>
+            <div className='btns'>
+              <h1>Umumiy Summa: {umumiySumma} so'm</h1>
 
-                {[...PRODUCTS, ...PRODUCTS1].map((product) => {
-                  if (cartItems[product.id] !== 0) {
-                    return <Cartitems key={product.id} data={product} />;
-                  }
-                })}
-                <div className="mb-3 text-center p-3">
-                  <Link onClick={() => ClearCart(id)}>Clear cart</Link>
-                </div>
-              </table>
+              {/* <button onClick={() => postTest()}>Zakaz berish</button> */}
             </div>
-          </div>
-          <hr />
-
-          <div className="mt-4 p-3 cart-total d-flex justify-content-between">
-            <div>
-              <button>Continue Shopping</button>
-            </div>
-            <div>
-              <h3>Total</h3>
-              <p className="my-2">
-                Total Products:
-                <span className="price">{totalProducts}</span>
-              </p>
-
-              <p className="price mb-4">${TotalAmount}</p>
-              <button>Check Out</button>
-            </div>
-          </div>
-        </section>
-      ) : (
-        <section className="p-3">
-          <div className="container-xxl">
-            <div className="row">
-              <div className="text-center">
-                <h3>Your Cart Is Empty</h3>
-                <p>
-                  Click here to <Link to={"/shop"}>add items</Link>
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+          </>
+        )}
+      </div>
+      <Footer />
     </>
   );
 };

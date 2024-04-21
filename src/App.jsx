@@ -1,39 +1,22 @@
-import Layout from "./layout";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/home";
-import Shop from "./pages/shop";
-import Blog from "./pages/blog";
-import About from "./pages/about";
-import Contact from "./pages/contact";
-import Cart from "./pages/cart";
-import Login from "./pages/login";
-import Wishlist from "./pages/wishlist";
-import ShopContext from "./components/shopcontext";
-import Details from "./pages/details";
-
-import "./App.css";
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { ChakraProvider, theme } from '@chakra-ui/react';
+import queryClient from './Services/QueryClient/index';
+import Router from './Router';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { CartProvider } from 'react-use-cart';
 
 function App() {
   return (
-    <>
-      <ShopContext>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="shop" element={<Shop />} />
-              <Route path="blog" element={<Blog />} />
-              <Route path="about" element={<About />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="cart" element={<Cart />} />
-              <Route path="login" element={<Login />} />
-              <Route path="wishlist" element={<Wishlist />} />
-              <Route path="details" element={<Details />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </ShopContext>
-    </>
+    <ChakraProvider theme={theme}>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <CartProvider>
+            <Router />
+          </CartProvider>
+        </QueryClientProvider>
+      </BrowserRouter>
+    </ChakraProvider>
   );
 }
 
