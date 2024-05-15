@@ -5,18 +5,18 @@
     align-items: center;
     justify-content: space-between;
   }
-  &__timer{
+  &__timer {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 10px;
     margin-top: 40px;
-    button{
+    button {
       margin: 0;
     }
   }
-  &__purp{
+  &__purp {
     color: #7d5eaa;
   }
   &__main_scroll {
@@ -27,19 +27,18 @@
     max-height: 234px;
     overflow-y: scroll;
     /* width */
-    
   }
-  &__address_top{
+  &__address_top {
     display: flex;
     flex-direction: column;
     align-items: start;
     gap: 5px;
-    p{
-        color: #7F7F7F;
+    p {
+      color: #7f7f7f;
     }
   }
-  &__address_btm{
-    color: #0E73FC;
+  &__address_btm {
+    color: #0e73fc;
   }
   &__address {
     display: flex;
@@ -334,10 +333,10 @@
 .text {
   color: red;
 }
-.error__text{
+.error__text {
   display: block;
   color: red;
-  &.error_message{
+  &.error_message {
     display: none;
   }
 }
