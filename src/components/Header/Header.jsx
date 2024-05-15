@@ -116,11 +116,11 @@ export const Header = () => {
 
   const handleSendCode = async () => {
     try {
-      const response = await login({ email });
-      setShowCodeInput(true);
-      setResendDisabled(true);
-      setTimeLeft(60);
-      setShowTimer(true);
+      const response = email.includes("@") ? await login({ email }) : null;
+      setShowCodeInput(email.includes("@") ? true : false);
+      setResendDisabled(email.includes("@") ? true : false);
+      setTimeLeft(60);  
+      setShowTimer(email.includes("@") ? true : false);
       setResendButtonText(
         `00:${timeLeft < 10 ? `0${timeLeft}` : timeLeft} сек`
       );
@@ -185,8 +185,8 @@ export const Header = () => {
   const handleEmailButtonClick = async () => {
     try {
       await handleSendCode();
-      setShowEmailInput(false);
-      setShowTimer(true);
+      setShowEmailInput(!email.includes("@") ? true : false);
+      setShowTimer(email.includes("@") ? true : false);
     } catch (error) {
       console.log(error);
     }
@@ -347,7 +347,7 @@ export const Header = () => {
                     <button
                       onClick={() => HandleBtnClick(1)}
                       className={`${s.header__modal_btn} ${
-                        Btn === 1 ? s.active : ""
+                        Btn === 1 ? s.active : ''
                       }`}
                     >
                       Доставка
@@ -533,7 +533,8 @@ export const Header = () => {
                       </InputLeftElement>
 
                       <Input
-                        type="text"
+                        type="number"
+                        maxLength={6}
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
                         className={`${s.input} ${!isCodeValid ? s.error : ""}`}
@@ -590,9 +591,10 @@ export const Header = () => {
                     >
                       <InputLeftAddon>+998</InputLeftAddon>
                       <Input
+                        maxLength={9}
                         value={phoneNumber}
                         onChange={(e) => setPhoneNumber(e.target.value)}
-                        type="tel"
+                        type="number"
                         placeholder="phone number"
                       />
                     </InputGroup>
